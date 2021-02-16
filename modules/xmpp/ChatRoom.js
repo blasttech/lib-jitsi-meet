@@ -1203,17 +1203,20 @@ export default class ChatRoom extends Listenable {
      * @param jid
      */
     kick(jid) {
-        const kickIQ = $iq({ to: this.roomjid,
-            type: 'set' })
-            .c('query', { xmlns: 'http://jabber.org/protocol/muc#admin' })
-            .c('item', { nick: Strophe.getResourceFromJid(jid),
-                role: 'none' })
-            .c('reason').t('You have been kicked.').up().up().up();
+        return new Promise((r, e) => {
+            const kickIQ = $iq({ to: this.roomjid,
+                type: 'set' })
+                .c('query', { xmlns: 'http://jabber.org/protocol/muc#admin' })
+                .c('item', { nick: Strophe.getResourceFromJid(jid),
+                    role: 'none' })
+                .c('reason').t('You have been kicked.').up().up().up();
 
-        this.connection.sendIQ(
-            kickIQ,
-            result => logger.log('Kick participant with jid: ', jid, result),
-            error => logger.log('Kick participant error: ', error));
+            this.connection.sendIQ(
+                kickIQ,
+                result => r(jid, result),
+                error => e(error)
+            );
+        })
     }
 
     /* eslint-disable max-params */
