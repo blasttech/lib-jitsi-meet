@@ -1452,10 +1452,14 @@ JitsiConference.prototype.grantOwner = function(id) {
 JitsiConference.prototype.kickParticipant = function(id) {
     const participant = this.getParticipantById(id);
 
-    if (!participant) {
-        return;
-    }
-    this.room.kick(participant.getJid());
+    return new Promise((r, e) => {
+        if (!participant) {
+            e();
+            return;
+        }
+
+        return this.room.kick(participant.getJid());
+    })
 };
 
 /**
