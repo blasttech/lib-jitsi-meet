@@ -1472,7 +1472,7 @@ JitsiConference.prototype.kickParticipant = function(id) {
             return;
         }
 
-        return this.room.kick(participant.getJid());
+        r(this.room.kick(participant.getJid()))
     })
 };
 
