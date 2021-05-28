@@ -41,11 +41,7 @@ class AverageStatReport {
      * @param {number} nextValue
      */
     addNext(nextValue) {
-        if (typeof nextValue !== 'number') {
-            logger.error(
-                `${this.name} - invalid value for idx: ${this.count}`,
-                nextValue);
-        } else if (!isNaN(nextValue)) {
+        if (!isNaN(nextValue)) {
             this.sum += nextValue;
             this.samples.push(nextValue);
             this.count += 1;
